@@ -1,0 +1,283 @@
+# Contact Manager Backend
+
+Backend API for the Contact Manager application. It provides user authentication, email verification, avatar upload, and private contact management with MongoDB.
+
+Frontend: https://summermoved0n.github.io/Contact-Manager-Frontend/
+
+## Tech Stack
+
+- Node.js
+- Express
+- MongoDB with Mongoose
+- JWT authentication
+- Joi validation
+- Multer and Jimp for avatar uploads
+- Nodemailer for email verification
+
+## Getting Started
+
+### 1. Install dependencies
+
+```bash
+npm install
+```
+
+### 2. Configure environment variables
+
+Create a `.env` file in the project root. You can use `.env.example` as a template:
+
+```env
+DB_HOST=
+PORT=
+JWT_SECRET=
+UKR_NET_PASS=
+UKR_NET_EMAIL=
+BASE_URL=
+```
+
+Environment variables:
+
+- `DB_HOST` - MongoDB connection string.
+- `PORT` - server port. Defaults to `3210` if not provided.
+- `JWT_SECRET` - secret key for signing JWT tokens.
+- `UKR_NET_EMAIL` - email address used to send verification emails.
+- `UKR_NET_PASS` - password or app password for the email account.
+- `BASE_URL` - backend base URL used in verification links.
+
+### 3. Run the server
+
+Development mode:
+
+```bash
+npm run dev
+```
+
+Production mode:
+
+```bash
+npm start
+```
+
+By default, the API runs on:
+
+```text
+http://localhost:3210
+```
+
+## API Documentation
+
+Swagger UI is available at:
+
+```text
+http://localhost:3210/api-docs
+```
+
+The raw OpenAPI JSON is available at:
+
+```text
+http://localhost:3210/api-docs.json
+```
+
+## API Overview
+
+Base API paths:
+
+- `/api/users`
+- `/api/contacts`
+
+Protected routes require an authorization header:
+
+```text
+Authorization: Bearer <token>
+```
+
+## User Routes
+
+### Register
+
+```http
+POST /api/users/register
+```
+
+Request body:
+
+```json
+{
+  "email": "user@example.com",
+  "password": "password123",
+  "subscription": "starter"
+}
+```
+
+`subscription` is optional and can be `starter`, `pro`, or `business`.
+
+### Verify Email
+
+```http
+GET /api/users/verify/:verificationToken
+```
+
+### Resend Verification Email
+
+```http
+POST /api/users/verify
+```
+
+Request body:
+
+```json
+{
+  "email": "user@example.com"
+}
+```
+
+### Login
+
+```http
+POST /api/users/login
+```
+
+Request body:
+
+```json
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+```
+
+### Get Current User
+
+```http
+GET /api/users/current
+```
+
+Requires authentication.
+
+### Logout
+
+```http
+POST /api/users/logout
+```
+
+Requires authentication.
+
+### Update Subscription
+
+```http
+PATCH /api/users
+```
+
+Requires authentication.
+
+Request body:
+
+```json
+{
+  "subscription": "pro"
+}
+```
+
+### Update Avatar
+
+```http
+PATCH /api/users/avatars
+```
+
+Requires authentication.
+
+Send `multipart/form-data` with the file field named `avatarURL`.
+
+## Contact Routes
+
+All contact routes require authentication.
+
+### Get Contacts
+
+```http
+GET /api/contacts
+```
+
+Query parameters:
+
+- `page` - page number. Defaults to `1`.
+- `limit` - contacts per page. Defaults to `20`.
+- `favorite` - filter favorite contacts.
+
+Example:
+
+```http
+GET /api/contacts?page=1&limit=10&favorite=true
+```
+
+### Get One Contact
+
+```http
+GET /api/contacts/:id
+```
+
+### Create Contact
+
+```http
+POST /api/contacts
+```
+
+Request body:
+
+```json
+{
+  "name": "Jane Doe",
+  "email": "jane@example.com",
+  "phone": "+1234567890"
+}
+```
+
+### Update Contact
+
+```http
+PUT /api/contacts/:id
+```
+
+Request body can include one or more fields:
+
+```json
+{
+  "name": "Jane Smith",
+  "email": "jane.smith@example.com",
+  "phone": "+1234567890"
+}
+```
+
+### Update Favorite Status
+
+```http
+PATCH /api/contacts/:id/favorite
+```
+
+Request body:
+
+```json
+{
+  "favorite": true
+}
+```
+
+### Delete Contact
+
+```http
+DELETE /api/contacts/:id
+```
+
+## Project Structure
+
+```text
+controllers/   Route controllers
+helpers/       Shared helpers and error handling
+middlewares/   Auth, validation, upload, and ID middleware
+models/        Mongoose models
+routes/        Express routers
+schemas/       Joi validation schemas
+services/      Database service functions
+public/        Static files and uploaded avatars
+tmp/           Temporary upload directory
+```

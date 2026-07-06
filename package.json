@@ -1,5 +1,5 @@
 {
-  "name": "goit-node-rest-api",
+  "name": "Contact-Manager-Backend",
   "type": "module",
   "scripts": {
     "start": "node ./app.js",
