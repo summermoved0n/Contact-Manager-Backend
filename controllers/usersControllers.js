@@ -17,31 +17,33 @@ const { JWT_SECRET, BASE_URL } = process.env;
 const register = async (req, res) => {
   const { email } = req.body;
   const user = await usersServices.findUser({ email });
+
   if (user) {
     throw HttpError(409, "Email in use");
   }
 
-  const verificationToken = nanoid();
+  // const verificationToken = nanoid();
 
   const avatar = gravatar.url(email);
+
   const newUser = await usersServices.register({
     ...req.body,
     avatar,
-    verificationToken,
+    // verificationToken,
   });
 
-  const verifyEmail = {
-    to: email,
-    subject: "Verify email",
-    html: `<a href="${BASE_URL}/api/users/verify/${verificationToken}" target="_blank">Click to verify</a>`,
-  };
+  // const verifyEmail = {
+  //   to: email,
+  //   subject: "Verify email",
+  //   html: `<a href="${BASE_URL}/api/users/verify/${verificationToken}" target="_blank">Click to verify</a>`,
+  // };
 
-  await sendEmail(verifyEmail);
+  // await sendEmail(verifyEmail);
 
   res.status(201).json({
     user: {
       email: newUser.email,
-      subscription: newUser.subscription,
+      // subscription: newUser.subscription,
     },
   });
 };
@@ -49,16 +51,20 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
   const user = await usersServices.findUser({ email });
+
   if (!user) {
     throw HttpError(401, "Email or password is wrong");
   }
-  if (!user.verify) {
-    throw HttpError(401, "Email not verify");
-  }
+
+  // if (!user.verify) {
+  //   throw HttpError(401, "Email not verify");
+  // }
+
   const comparedPassword = await usersServices.validatePassword(
     password,
-    user.password
+    user.password,
   );
+
   if (!comparedPassword) {
     throw HttpError(401, "Email or password is wrong");
   }
@@ -75,7 +81,8 @@ const login = async (req, res) => {
     token,
     user: {
       email: user.email,
-      subscription: user.subscription,
+      name: user.name,
+      // subscription: user.subscription,
     },
   });
 };
@@ -85,7 +92,7 @@ const getCurrent = async (req, res) => {
 
   res.json({
     email,
-    subscription,
+    // subscription,
   });
 };
 
@@ -136,7 +143,7 @@ const verify = async (req, res) => {
 
   await usersServices.updateUser(
     { _id: id },
-    { verify: true, verificationToken: null }
+    { verify: true, verificationToken: null },
   );
 
   res.json({

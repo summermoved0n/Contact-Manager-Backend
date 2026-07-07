@@ -1,6 +1,7 @@
 import Joi from "joi";
 
 export const userRegisterSchema = Joi.object({
+  name: Joi.string().min(2).max(20).required(),
   password: Joi.string().min(6).required(),
   email: Joi.string().required(),
   subscription: Joi.string().valid("starter", "pro", "business"),

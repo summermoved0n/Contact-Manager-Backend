@@ -25,7 +25,7 @@ const swaggerDocument = {
   tags: [
     {
       name: "Users",
-      description: "Authentication, verification, profile, and avatar routes",
+      description: "Authentication, profile, and avatar routes",
     },
     {
       name: "Contacts",
@@ -52,8 +52,14 @@ const swaggerDocument = {
       },
       UserRegisterRequest: {
         type: "object",
-        required: ["email", "password"],
+        required: ["name", "email", "password"],
         properties: {
+          name: {
+            type: "string",
+            minLength: 2,
+            maxLength: 20,
+            example: "Jane",
+          },
           email: {
             type: "string",
             example: "user@example.com",
@@ -62,11 +68,6 @@ const swaggerDocument = {
             type: "string",
             minLength: 6,
             example: "password123",
-          },
-          subscription: {
-            type: "string",
-            enum: ["starter", "pro", "business"],
-            example: "starter",
           },
         },
       },
@@ -92,10 +93,18 @@ const swaggerDocument = {
             type: "string",
             example: "user@example.com",
           },
-          subscription: {
+        },
+      },
+      AuthUserResponse: {
+        type: "object",
+        properties: {
+          email: {
             type: "string",
-            enum: ["starter", "pro", "business"],
-            example: "starter",
+            example: "user@example.com",
+          },
+          name: {
+            type: "string",
+            example: "Jane",
           },
         },
       },
@@ -107,28 +116,7 @@ const swaggerDocument = {
             example: "jwt.token.value",
           },
           user: {
-            $ref: "#/components/schemas/UserResponse",
-          },
-        },
-      },
-      SubscriptionRequest: {
-        type: "object",
-        required: ["subscription"],
-        properties: {
-          subscription: {
-            type: "string",
-            enum: ["starter", "pro", "business"],
-            example: "pro",
-          },
-        },
-      },
-      EmailRequest: {
-        type: "object",
-        required: ["email"],
-        properties: {
-          email: {
-            type: "string",
-            example: "user@example.com",
+            $ref: "#/components/schemas/AuthUserResponse",
           },
         },
       },
@@ -143,13 +131,9 @@ const swaggerDocument = {
             type: "string",
             example: "Jane Doe",
           },
-          email: {
-            type: "string",
-            example: "jane@example.com",
-          },
           phone: {
             type: "string",
-            example: "+1234567890",
+            example: "1234567890",
           },
           favorite: {
             type: "boolean",
@@ -171,19 +155,18 @@ const swaggerDocument = {
       },
       ContactCreateRequest: {
         type: "object",
-        required: ["name", "email", "phone"],
+        required: ["name", "phone"],
         properties: {
           name: {
             type: "string",
+            minLength: 2,
+            maxLength: 20,
             example: "Jane Doe",
-          },
-          email: {
-            type: "string",
-            example: "jane@example.com",
           },
           phone: {
             type: "string",
-            example: "+1234567890",
+            maxLength: 10,
+            example: "1234567890",
           },
         },
       },
@@ -193,15 +176,14 @@ const swaggerDocument = {
         properties: {
           name: {
             type: "string",
+            minLength: 2,
+            maxLength: 20,
             example: "Jane Smith",
-          },
-          email: {
-            type: "string",
-            example: "jane.smith@example.com",
           },
           phone: {
             type: "string",
-            example: "+1234567890",
+            maxLength: 10,
+            example: "1234567890",
           },
         },
       },
@@ -279,7 +261,7 @@ const swaggerDocument = {
     "/api/users/login": {
       post: {
         tags: ["Users"],
-        summary: "Log in a verified user",
+        summary: "Log in a user",
         requestBody: {
           required: true,
           content: {
@@ -344,38 +326,6 @@ const swaggerDocument = {
         },
       },
     },
-    "/api/users": {
-      patch: {
-        tags: ["Users"],
-        summary: "Update user subscription",
-        security: [{ bearerAuth: [] }],
-        requestBody: {
-          required: true,
-          content: {
-            "application/json": {
-              schema: {
-                $ref: "#/components/schemas/SubscriptionRequest",
-              },
-            },
-          },
-        },
-        responses: {
-          200: {
-            description: "Subscription updated",
-            content: {
-              "application/json": {
-                schema: {
-                  $ref: "#/components/schemas/UserResponse",
-                },
-              },
-            },
-          },
-          401: {
-            $ref: "#/components/responses/Unauthorized",
-          },
-        },
-      },
-    },
     "/api/users/avatars": {
       patch: {
         tags: ["Users"],
@@ -403,57 +353,6 @@ const swaggerDocument = {
           },
           401: {
             $ref: "#/components/responses/Unauthorized",
-          },
-        },
-      },
-    },
-    "/api/users/verify": {
-      post: {
-        tags: ["Users"],
-        summary: "Resend verification email",
-        requestBody: {
-          required: true,
-          content: {
-            "application/json": {
-              schema: {
-                $ref: "#/components/schemas/EmailRequest",
-              },
-            },
-          },
-        },
-        responses: {
-          200: {
-            description: "Verification email sent",
-          },
-          400: {
-            description: "Verification has already been passed",
-          },
-          404: {
-            $ref: "#/components/responses/NotFound",
-          },
-        },
-      },
-    },
-    "/api/users/verify/{verificationToken}": {
-      get: {
-        tags: ["Users"],
-        summary: "Verify user email",
-        parameters: [
-          {
-            name: "verificationToken",
-            in: "path",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
-        ],
-        responses: {
-          200: {
-            description: "Verification successful",
-          },
-          404: {
-            $ref: "#/components/responses/NotFound",
           },
         },
       },

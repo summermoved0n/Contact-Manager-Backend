@@ -4,6 +4,10 @@ import { handeSaveError, setUpdateSettings } from "./hooks.js";
 
 const userSchema = new Schema(
   {
+    name: {
+      type: String,
+      required: [true, "Name is required"],
+    },
     password: {
       type: String,
       required: [true, "Password is required"],
@@ -13,26 +17,25 @@ const userSchema = new Schema(
       required: [true, "Email is required"],
       unique: true,
     },
-    subscription: {
-      type: String,
-      enum: ["starter", "pro", "business"],
-      default: "starter",
-    },
+    // subscription: {
+    //   type: String,
+    //   enum: ["starter", "pro", "business"],
+    //   default: "starter",
+    // },
     avatarURL: String,
-    verify: {
-      type: Boolean,
-      default: false,
-    },
-    verificationToken: {
-      type: String,
-      // required: [true, "Verify token is required"],
-    },
+    // verify: {
+    //   type: Boolean,
+    //   default: false,
+    // },
+    // verificationToken: {
+    //   type: String,
+    // },
     token: {
       type: String,
       default: null,
     },
   },
-  { versionKey: false, timestamps: true }
+  { versionKey: false, timestamps: true },
 );
 
 userSchema.post("save", handeSaveError);

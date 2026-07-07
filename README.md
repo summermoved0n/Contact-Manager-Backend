@@ -1,6 +1,6 @@
 # Contact Manager Backend
 
-Backend API for the Contact Manager application. It provides user authentication, email verification, avatar upload, and private contact management with MongoDB.
+Backend API for the Contact Manager application. It provides user authentication, avatar upload, and private contact management with MongoDB.
 
 Frontend: https://summermoved0n.github.io/Contact-Manager-Frontend/
 
@@ -12,7 +12,6 @@ Frontend: https://summermoved0n.github.io/Contact-Manager-Frontend/
 - JWT authentication
 - Joi validation
 - Multer and Jimp for avatar uploads
-- Nodemailer for email verification
 
 ## Getting Started
 
@@ -30,9 +29,6 @@ Create a `.env` file in the project root. You can use `.env.example` as a templa
 DB_HOST=
 PORT=
 JWT_SECRET=
-UKR_NET_PASS=
-UKR_NET_EMAIL=
-BASE_URL=
 ```
 
 Environment variables:
@@ -40,9 +36,6 @@ Environment variables:
 - `DB_HOST` - MongoDB connection string.
 - `PORT` - server port. Defaults to `3210` if not provided.
 - `JWT_SECRET` - secret key for signing JWT tokens.
-- `UKR_NET_EMAIL` - email address used to send verification emails.
-- `UKR_NET_PASS` - password or app password for the email account.
-- `BASE_URL` - backend base URL used in verification links.
 
 ### 3. Run the server
 
@@ -103,33 +96,13 @@ Request body:
 
 ```json
 {
+  "name": "Jane",
   "email": "user@example.com",
-  "password": "password123",
-  "subscription": "starter"
+  "password": "password123"
 }
 ```
 
-`subscription` is optional and can be `starter`, `pro`, or `business`.
-
-### Verify Email
-
-```http
-GET /api/users/verify/:verificationToken
-```
-
-### Resend Verification Email
-
-```http
-POST /api/users/verify
-```
-
-Request body:
-
-```json
-{
-  "email": "user@example.com"
-}
-```
+Email verification and subscription features are currently disabled and are not part of the available frontend flow.
 
 ### Login
 
@@ -161,22 +134,6 @@ POST /api/users/logout
 ```
 
 Requires authentication.
-
-### Update Subscription
-
-```http
-PATCH /api/users
-```
-
-Requires authentication.
-
-Request body:
-
-```json
-{
-  "subscription": "pro"
-}
-```
 
 ### Update Avatar
 
@@ -227,8 +184,7 @@ Request body:
 ```json
 {
   "name": "Jane Doe",
-  "email": "jane@example.com",
-  "phone": "+1234567890"
+  "phone": "1234567890"
 }
 ```
 
@@ -243,8 +199,7 @@ Request body can include one or more fields:
 ```json
 {
   "name": "Jane Smith",
-  "email": "jane.smith@example.com",
-  "phone": "+1234567890"
+  "phone": "1234567890"
 }
 ```
 
