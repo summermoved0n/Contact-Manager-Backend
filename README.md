@@ -66,29 +66,8 @@ http://localhost:3210
 
 ## API Documentation
 
-Swagger UI is available at:
-
-```text
-http://localhost:3210/api-docs
-```
-
-After Render deploy, Swagger UI is available at:
-
-```text
-https://your-service-name.onrender.com/api-docs
-```
-
-The raw OpenAPI JSON is available at:
-
-```text
-http://localhost:3210/api-docs.json
-```
-
-After Render deploy, the raw OpenAPI JSON is available at:
-
-```text
-https://your-service-name.onrender.com/api-docs.json
-```
+- **Swagger UI:** https://contact-manager-backend-fb7b.onrender.com/api-docs
+- **OpenAPI JSON:** https://contact-manager-backend-fb7b.onrender.com/api-docs.json
 
 ## API Overview
 
