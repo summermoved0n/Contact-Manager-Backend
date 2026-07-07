@@ -1,8 +1,13 @@
 # Contact Manager Backend
 
-Backend API for the Contact Manager application. It provides user authentication, avatar upload, and private contact management with MongoDB.
+REST API for the Contact Manager application built with Node.js, Express, and MongoDB. It provides secure authentication, avatar uploads, and private contact management.
 
-Frontend: https://summermoved0n.github.io/Contact-Manager-Frontend/
+## Related Project
+
+The frontend application consumes this API for authentication and contact management.
+
+- **Frontend Repository:** https://github.com/summermoved0n/Contact-Manager-Frontend
+- **Frontend Live Demo:** https://summermoved0n.github.io/Contact-Manager-Frontend/
 
 ## Tech Stack
 
@@ -29,6 +34,7 @@ Create a `.env` file in the project root. You can use `.env.example` as a templa
 DB_HOST=
 PORT=
 JWT_SECRET=
+BASE_URL=
 ```
 
 Environment variables:
@@ -36,6 +42,7 @@ Environment variables:
 - `DB_HOST` - MongoDB connection string.
 - `PORT` - server port. Defaults to `3210` if not provided.
 - `JWT_SECRET` - secret key for signing JWT tokens.
+- `BASE_URL` - deployed backend URL used by Swagger, for example `https://your-service-name.onrender.com`.
 
 ### 3. Run the server
 
@@ -65,10 +72,22 @@ Swagger UI is available at:
 http://localhost:3210/api-docs
 ```
 
+After Render deploy, Swagger UI is available at:
+
+```text
+https://your-service-name.onrender.com/api-docs
+```
+
 The raw OpenAPI JSON is available at:
 
 ```text
 http://localhost:3210/api-docs.json
+```
+
+After Render deploy, the raw OpenAPI JSON is available at:
+
+```text
+https://your-service-name.onrender.com/api-docs.json
 ```
 
 ## API Overview
