@@ -66,8 +66,9 @@ http://localhost:3210
 
 ## API Documentation
 
+Interactive API documentation is available through Swagger UI:
+
 - **Swagger UI:** https://contact-manager-backend-fb7b.onrender.com/api-docs
-- **OpenAPI JSON:** https://contact-manager-backend-fb7b.onrender.com/api-docs.json
 
 ## API Overview
 
